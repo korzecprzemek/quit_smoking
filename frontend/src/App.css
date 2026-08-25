@@ -1,4 +1,4 @@
-.app {
+.App {
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -6,6 +6,15 @@
   background: #111;
   color: white;
   font-family: Arial, sans-serif;
+}
+.timer {
+  display: flex;
+  gap: 0.5rem;
+}
+.reward {
+  margin-top: 3rem;
+  font-size: 5rem;
+  text-align: center;
 }
 
 .dashboard {
@@ -58,7 +67,7 @@ button {
   padding: 1rem;
   border: none;
   border-radius: 12px;
-  font-size: 1 rem;
+  font-size: 1rem;
   cursor: pointer;
   
 }
