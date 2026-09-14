@@ -3,18 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #111;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-.timer {
-  display: flex;
-  gap: 0.5rem;
-}
-.reward {
-  margin-top: 3rem;
-  font-size: 5rem;
-  text-align: center;
 }
 
 .dashboard {
@@ -27,15 +15,15 @@ h1 {
 }
 
 .subtitle {
-  color: #999;
+  color: #9ca3af;
   margin-top: 0.4rem;
 }
 
 .hero-card,
 .stat-card {
-  background: #1c1c1c;
+  background: rgba(15, 23, 42, 0.75);
   border-radius: 16px;
-  padding: 1.5rem;
+  padding: 1.25rem;
   margin-top: 1rem;
 }
 
@@ -47,6 +35,12 @@ h1 {
 
 .hero-card strong {
   font-size: 2rem;
+}
+
+.timer {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .stats {
@@ -69,5 +63,10 @@ button {
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
-  
+}
+
+.reward {
+  margin-top: 1rem;
+  font-size: 3rem;
+  text-align: center;
 }

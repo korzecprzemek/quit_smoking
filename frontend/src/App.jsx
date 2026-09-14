@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import CravingTracker from "./components/CravingTracker";
+import SmokeFreeClock from "./components/SmokeFreeClock";
+import StatCard from "./components/StatCard";
+import LoginView from "./components/LoginView";
+import BreathingGame from "./components/BreathingGame";
 import './App.css';
 
 const DEFAULT_QUIT_DATE = "2026-08-23T08:00";
@@ -9,6 +13,8 @@ const DEFAULT_CIGARETTES_PER_DAY = 15;
 function App() {
   const [cravings, setCravings] = useState(0);
   const [now, setNow] = useState(() => new Date());
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentView, setCurrentView] = useState("dashboard");
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -23,41 +29,22 @@ function App() {
   );
   const quitDate = new Date(quitDateInput);
   const [cigarettesPerDay, setCigarettesPerDay] = useState(
-    () => localStorage.getItem("cigarettesPerDay") || DEFAULT_CIGARETTES_PER_DAY
+    () => Number(localStorage.getItem("cigarettesPerDay")) || DEFAULT_CIGARETTES_PER_DAY
   );
   const packPrice = 8;
   const cigarettesPerPack = 20;
 
-  const smokeFreeMilliseconds = now - quitDate;
   const smokeFreeSeconds = Math.max(
     0,
-    Math.floor(smokeFreeMilliseconds / 1000)
+    Math.floor((now - quitDate) / 1000)
   );
-
   const daysSmokeFree = smokeFreeSeconds / (24 * 60 * 60);
+  const cigarettesAvoided = Math.floor(daysSmokeFree * cigarettesPerDay);
+  const moneySaved = (cigarettesAvoided / cigarettesPerPack) * packPrice;
 
-  const days = Math.floor(smokeFreeSeconds / (24 * 60 * 60));
-
-  const hours = Math.floor(
-    (smokeFreeSeconds % (24 * 60 * 60)) / (60 * 60)
-  );
-
-  const minutes = Math.floor(
-    (smokeFreeSeconds % (60 * 60)) / 60
-  );
-
-  const seconds = smokeFreeSeconds % 60;
-  
-  const cigarettesAvoided = Math.floor(
-    daysSmokeFree * cigarettesPerDay
-  )
-
-  function padTime(value) {
-    return String(value).padStart(2,"0");
-  }
   function handleCraving() {
-    setCravings((current) => current +1);
-  };
+    setCravings((current) => current + 1);
+  }
 
   function handleQuitDateChange(event) {
     const newQuitDate = event.target.value;
@@ -70,12 +57,20 @@ function App() {
     const newValue = Number(event.target.value);
     setCigarettesPerDay(newValue);
 
-    localStorage.setItem("cigarettesPerDay", newValue);
+    localStorage.setItem("cigarettesPerDay", String(newValue));
   }
 
-  const moneySaved = (cigarettesAvoided / cigarettesPerPack) * packPrice
+  if(!loggedIn){
+    return <LoginView onLogin={() => setLoggedIn(true)} />;
+  }
+  if(currentView === "breathing") {
+    return (
+    <main className="breathing-screen">
+      <BreathingGame onBack={ () => setCurrentView("dashboard")}/>
+    </main>
+    )
+  }
 
-  
   return (
     <main className="App">
       <section className="dashboard">
@@ -96,39 +91,37 @@ function App() {
         </label>
 
         <input
-        id="cigarettes-per-day"
-        type="number"
-        min="0"
-        value={cigarettesPerDay}
-        onChange={handleCigarettesPerDayChange}
+          id="cigarettes-per-day"
+          type="number"
+          min="0"
+          value={cigarettesPerDay}
+          onChange={handleCigarettesPerDayChange}
         />
-        <div className="hero-card">
-          <span>Smoke free</span>
-          <strong className="timer">
-            <span>{days} days</span>
-            {padTime(hours)}:
-            {padTime(minutes)}:
-            {padTime(seconds)}
-          </strong>
-        </div>
+
+        <SmokeFreeClock quitDate={quitDateInput} now={now} />
+
         <div className="stats">
-          <div className="stat-card">
-            <span>Money saved</span>
-            <strong>€{moneySaved.toFixed(2)}</strong>
-          </div>
-          
-          <div className="stat-card">
-            <span>Cigarettes avoided</span>
-            <strong>{cigarettesAvoided}</strong>
-          </div>
+          <StatCard
+            label="Money saved"
+            value={`€${moneySaved.toFixed(2)}`}
+          />
+
+          <StatCard
+            label="Cigarettes avoided"
+            value={String(cigarettesAvoided)}
+          />
         </div>
-        
+
         <CravingTracker
           count={cravings}
           onLogCraving={handleCraving}
         />
+        <button type ="button"
+        onClick={() => setCurrentView("breathing")}>
+          Try breathing exercise</button>
       </section>
     </main>
-  )
+  );
 }
-export default App
+
+export default App;
