@@ -4,9 +4,10 @@ import CravingTracker from "./components/CravingTracker";
 import SmokeFreeClock from "./components/SmokeFreeClock";
 import StatCard from "./components/StatCard";
 import LoginView from "./components/LoginView";
-import BreathingGame from "./components/BreathingGame";
+import GameMenu from "./components/GameMenu";
 import GameShell from "./components/GameShell";
 import ProgressCard from "./components/ProgressCard";
+import { getGame } from "./games/registry";
 import {
   completeGame,
   getCompletedGames,
@@ -26,7 +27,7 @@ function App() {
   const [cravings, setCravings] = useState(0);
   const [now, setNow] = useState(() => new Date());
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentView, setCurrentView] = useState("dashboard");
+  const [activeGameId, setActiveGameId] = useState(null); // null = dashboard
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -73,18 +74,20 @@ function App() {
   if(!loggedIn){
     return <LoginView onLogin={() => setLoggedIn(true)} />;
   }
-  if(currentView === "breathing") {
+  const activeGame = getGame(activeGameId);
+  if (activeGame) {
+    const Game = activeGame.component;
     return (
-    <main className="breathing-screen">
-      <GameShell
-        title="Breathing"
-        onComplete={() => setGames(completeGame("breathing"))}
-        onBack={() => setCurrentView("dashboard")}
-      >
-        <BreathingGame />
-      </GameShell>
-    </main>
-    )
+      <main className="game-screen">
+        <GameShell
+          title={activeGame.title}
+          onComplete={() => setGames(completeGame(activeGame.id))}
+          onBack={() => setActiveGameId(null)}
+        >
+          <Game />
+        </GameShell>
+      </main>
+    );
   }
 
   return (
@@ -139,9 +142,7 @@ function App() {
           count={cravings}
           onLogCraving={handleCraving}
         />
-        <button type ="button"
-        onClick={() => setCurrentView("breathing")}>
-          Try breathing exercise</button>
+        <GameMenu onSelect={setActiveGameId} />
       </section>
     </main>
   );
