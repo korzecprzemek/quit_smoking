@@ -1,6 +1,7 @@
+import { getSmokeFreeSeconds } from "../services/stats";
+
 function SmokeFreeClock({ quitDate, now }) {
-  const smokeFreeMilliseconds = now - new Date(quitDate);
-  const smokeFreeSeconds = Math.max(0, Math.floor(smokeFreeMilliseconds / 1000));
+  const smokeFreeSeconds = getSmokeFreeSeconds(quitDate, now);
 
   const days = Math.floor(smokeFreeSeconds / (24 * 60 * 60));
   const hours = Math.floor((smokeFreeSeconds % (24 * 60 * 60)) / (60 * 60));

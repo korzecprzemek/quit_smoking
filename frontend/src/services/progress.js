@@ -10,9 +10,13 @@ const CRAVINGS_KEY = "puffless.cravings";
 const LEGACY_QUIT_DATE_KEY = "quitDate";
 const LEGACY_CIGARETTES_KEY = "cigarettesPerDay";
 
+// quitDate is null until onboarding: that is how the app knows it's a first run.
 const DEFAULT_SETTINGS = {
-  quitDate: "2026-08-23T08:00",
+  quitDate: null,
   cigarettesPerDay: 15,
+  cigarettesPerPack: 20,
+  packPrice: 8,
+  currency: "€",
   theme: "system", // "system" | "light" | "dark"
 };
 
@@ -38,6 +42,14 @@ export function toDayString(date = new Date()) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+// Local date and time as "YYYY-MM-DDTHH:mm", the format <input type="datetime-local">
+// uses for its value (and for min/max).
+export function toInputDateTime(date = new Date()) {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${toDayString(date)}T${hours}:${minutes}`;
 }
 
 export function getSettings() {

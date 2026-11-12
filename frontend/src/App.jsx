@@ -5,7 +5,7 @@ import CravingCard from "./components/CravingCard";
 import CravingScreen from "./components/CravingScreen";
 import SmokeFreeClock from "./components/SmokeFreeClock";
 import StatCard from "./components/StatCard";
-import LoginView from "./components/LoginView";
+import OnboardingView from "./components/OnboardingView";
 import GameMenu from "./components/GameMenu";
 import GameRunner from "./components/GameRunner";
 import SettingsView from "./components/SettingsView";
@@ -24,6 +24,11 @@ import {
 import { countResistedThisWeek } from "./services/cravings";
 import { applyTheme } from "./services/theme";
 import {
+  getCigarettesAvoided,
+  getMoneySaved,
+  getSmokeFreeSeconds,
+} from "./services/stats";
+import {
   DAILY_GOAL,
   getStreak,
   getTodayCount,
@@ -32,7 +37,6 @@ import {
 
 function App() {
   const [now, setNow] = useState(() => new Date());
-  const [loggedIn, setLoggedIn] = useState(false);
   const [activeGameId, setActiveGameId] = useState(null); // null = dashboard
   const [showSettings, setShowSettings] = useState(false);
   const [showCraving, setShowCraving] = useState(false);
@@ -52,19 +56,16 @@ function App() {
     applyTheme(settings.theme);
   }, [settings.theme]);
 
-  const quitDateInput = settings.quitDate;
-  const cigarettesPerDay = settings.cigarettesPerDay;
-  const quitDate = new Date(quitDateInput);
-  const packPrice = 8;
-  const cigarettesPerPack = 20;
-
-  const smokeFreeSeconds = Math.max(
-    0,
-    Math.floor((now - quitDate) / 1000)
+  const smokeFreeSeconds = getSmokeFreeSeconds(settings.quitDate, now);
+  const cigarettesAvoided = getCigarettesAvoided(
+    smokeFreeSeconds,
+    settings.cigarettesPerDay
   );
-  const daysSmokeFree = smokeFreeSeconds / (24 * 60 * 60);
-  const cigarettesAvoided = Math.floor(daysSmokeFree * cigarettesPerDay);
-  const moneySaved = (cigarettesAvoided / cigarettesPerPack) * packPrice;
+  const moneySaved = getMoneySaved(
+    cigarettesAvoided,
+    settings.cigarettesPerPack,
+    settings.packPrice
+  );
 
   // Derived on every render from `games`: no separate state to keep in sync.
   // Using `now` (ticks every second) means the day rolls over by itself.
@@ -86,9 +87,15 @@ function App() {
     setSettings(saveSettings(changes));
   }
 
-  if(!loggedIn){
-    return <LoginView onLogin={() => setLoggedIn(true)} />;
+  // First run: no quit date yet, so collect the basics before anything else.
+  if (settings.quitDate === null) {
+    return (
+      <OnboardingView
+        onComplete={(values) => setSettings(saveSettings(values))}
+      />
+    );
   }
+
   const activeGame = getGame(activeGameId);
   if (activeGame) {
     return (
@@ -154,11 +161,11 @@ function App() {
           </div>
 
           <div className="pane pane-main">
-            <SmokeFreeClock quitDate={quitDateInput} now={now} />
+            <SmokeFreeClock quitDate={settings.quitDate} now={now} />
             <div className="stats">
               <StatCard
                 label="Money saved"
-                value={`€${moneySaved.toFixed(2)}`}
+                value={`${settings.currency}${moneySaved.toFixed(2)}`}
               />
               <StatCard
                 label="Cigarettes avoided"

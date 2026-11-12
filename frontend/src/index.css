@@ -585,7 +585,7 @@ main.App {
 }
 
 /* ==========================================================================
-   Settings and login
+   Settings and onboarding
    ========================================================================== */
 .settings-card {
   width: min(100%, 440px);
@@ -597,19 +597,27 @@ main.App {
   font-size: 1.5rem;
 }
 
-.login-page {
+.field-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-3);
+}
+
+.onboarding {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-5);
-  padding: var(--space-4);
+  padding: var(--space-5) var(--space-4);
   text-align: center;
 }
 
-.login-form {
-  width: min(100%, 380px);
+.onboarding-card {
+  width: min(100%, 420px);
+  gap: var(--space-4);
+  text-align: left;
   box-shadow: var(--shadow-md);
 }
 
