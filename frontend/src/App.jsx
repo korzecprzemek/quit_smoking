@@ -5,10 +5,8 @@ import SmokeFreeClock from "./components/SmokeFreeClock";
 import StatCard from "./components/StatCard";
 import LoginView from "./components/LoginView";
 import BreathingGame from "./components/BreathingGame";
+import { getSettings, saveSettings } from "./services/progress";
 import './App.css';
-
-const DEFAULT_QUIT_DATE = "2026-08-23T08:00";
-const DEFAULT_CIGARETTES_PER_DAY = 15;
 
 function App() {
   const [cravings, setCravings] = useState(0);
@@ -24,13 +22,10 @@ function App() {
     return () => clearInterval(timerId);
   }, []);
 
-  const [quitDateInput, setQuitDateInput] = useState(
-    () => localStorage.getItem("quitDate") || DEFAULT_QUIT_DATE
-  );
+  const [settings, setSettings] = useState(getSettings);
+  const quitDateInput = settings.quitDate;
+  const cigarettesPerDay = settings.cigarettesPerDay;
   const quitDate = new Date(quitDateInput);
-  const [cigarettesPerDay, setCigarettesPerDay] = useState(
-    () => Number(localStorage.getItem("cigarettesPerDay")) || DEFAULT_CIGARETTES_PER_DAY
-  );
   const packPrice = 8;
   const cigarettesPerPack = 20;
 
@@ -47,17 +42,11 @@ function App() {
   }
 
   function handleQuitDateChange(event) {
-    const newQuitDate = event.target.value;
-
-    setQuitDateInput(newQuitDate);
-    localStorage.setItem("quitDate", newQuitDate);
+    setSettings(saveSettings({ quitDate: event.target.value }));
   }
 
   function handleCigarettesPerDayChange(event) {
-    const newValue = Number(event.target.value);
-    setCigarettesPerDay(newValue);
-
-    localStorage.setItem("cigarettesPerDay", String(newValue));
+    setSettings(saveSettings({ cigarettesPerDay: Number(event.target.value) }));
   }
 
   if(!loggedIn){
