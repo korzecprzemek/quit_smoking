@@ -1,3 +1,5 @@
+import { THEMES } from "../services/theme";
+
 // Controlled inputs: values come from props, edits go up through onChange.
 // This component doesn't know about storage, App decides what to do with them.
 function SettingsView({ settings, onChange, onBack }) {
@@ -27,6 +29,23 @@ function SettingsView({ settings, onChange, onBack }) {
               onChange({ cigarettesPerDay: Number(event.target.value) })
             }
           />
+        </div>
+
+        <div className="field">
+          <span id="theme-label" className="card-label">Theme</span>
+          <div className="segmented" role="group" aria-labelledby="theme-label">
+            {THEMES.map((theme) => (
+              <button
+                key={theme.value}
+                type="button"
+                className={settings.theme === theme.value ? "" : "btn-secondary"}
+                aria-pressed={settings.theme === theme.value}
+                onClick={() => onChange({ theme: theme.value })}
+              >
+                {theme.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <button type="button" className="btn-secondary" onClick={onBack}>

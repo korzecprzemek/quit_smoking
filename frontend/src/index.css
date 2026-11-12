@@ -1,33 +1,36 @@
 /* ==========================================================================
    Design tokens. Change the look here, not in individual rules.
    ========================================================================== */
+/* Each colour token is light-dark(lightValue, darkValue). Which one applies
+   is decided by `color-scheme`: both (System: follows the OS), or forced to
+   one by the theme setting via the data-theme attribute on <html>. */
 :root {
-  color-scheme: light dark; /* native inputs, scrollbars, date picker follow the theme */
+  color-scheme: light dark;
 
   --font: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Colour: neutrals + one accent (teal) */
-  --bg: #f3f6fb;
-  --surface: #ffffff;
-  --surface-2: #f6f8fc;
-  --border: #e2e8f0;
-  --text: #0f172a;
-  --text-muted: #556176;
-  --accent: #0f766e;
-  --accent-hover: #115e59;
-  --accent-soft: #dff3f1;
-  --on-accent: #ffffff;
-  --focus: #2563eb;
+  --bg: light-dark(#f3f6fb, #0a1220);
+  --surface: light-dark(#ffffff, #121b2d);
+  --surface-2: light-dark(#f6f8fc, #17223a);
+  --border: light-dark(#e2e8f0, #243049);
+  --text: light-dark(#0f172a, #e8eef9);
+  --text-muted: light-dark(#556176, #9fb0cb);
+  --accent: light-dark(#0f766e, #2dd4bf);
+  --accent-hover: light-dark(#115e59, #5eead4);
+  --accent-soft: light-dark(#dff3f1, #11363a);
+  --on-accent: light-dark(#ffffff, #042f2e);
+  --focus: light-dark(#2563eb, #93c5fd);
 
   /* The big smoke-free clock card */
-  --hero-bg: linear-gradient(145deg, #0f766e 0%, #0b5c56 100%);
-  --hero-text: #ffffff;
-  --hero-muted: rgba(255, 255, 255, 0.85);
+  --hero-bg: linear-gradient(145deg, light-dark(#0f766e, #115e59) 0%, light-dark(#0b5c56, #0f4f4b) 100%);
+  --hero-text: light-dark(#ffffff, #f0fdfa);
+  --hero-muted: light-dark(rgba(255, 255, 255, 0.85), rgba(240, 253, 250, 0.85));
 
   /* Game screens */
-  --game-screen-bg: linear-gradient(160deg, #dff3f0 0%, #e6edfb 100%);
-  --bubble-border: rgba(15, 118, 110, 0.55);
-  --bubble-fill: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(45, 212, 191, 0.3));
+  --game-screen-bg: linear-gradient(160deg, light-dark(#dff3f0, #0a1f24) 0%, light-dark(#e6edfb, #0a1220) 100%);
+  --bubble-border: light-dark(rgba(15, 118, 110, 0.55), rgba(94, 234, 212, 0.6));
+  --bubble-fill: radial-gradient(circle at 30% 30%, light-dark(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.55)), light-dark(rgba(45, 212, 191, 0.3), rgba(45, 212, 191, 0.2)));
 
   /* Spacing scale */
   --space-1: 0.25rem;
@@ -42,8 +45,8 @@
   --radius-lg: 20px;
 
   /* Soft, layered shadows */
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.08);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 12px 28px -8px rgba(15, 23, 42, 0.18);
+  --shadow-sm: 0 1px 2px light-dark(rgba(15, 23, 42, 0.05), rgba(0, 0, 0, 0.4)), 0 1px 3px light-dark(rgba(15, 23, 42, 0.08), rgba(0, 0, 0, 0.3));
+  --shadow-md: 0 4px 6px -1px light-dark(rgba(15, 23, 42, 0.07), rgba(0, 0, 0, 0.4)), 0 12px 28px -8px light-dark(rgba(15, 23, 42, 0.18), rgba(0, 0, 0, 0.6));
 
   font-family: var(--font);
   line-height: 1.5;
@@ -54,31 +57,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a1220;
-    --surface: #121b2d;
-    --surface-2: #17223a;
-    --border: #243049;
-    --text: #e8eef9;
-    --text-muted: #9fb0cb;
-    --accent: #2dd4bf;
-    --accent-hover: #5eead4;
-    --accent-soft: #11363a;
-    --on-accent: #042f2e;
-    --focus: #93c5fd;
+/* Theme setting overrides (no attribute = System) */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
 
-    --hero-bg: linear-gradient(145deg, #115e59 0%, #0f4f4b 100%);
-    --hero-text: #f0fdfa;
-    --hero-muted: rgba(240, 253, 250, 0.85);
-
-    --game-screen-bg: linear-gradient(160deg, #0a1f24 0%, #0a1220 100%);
-    --bubble-border: rgba(94, 234, 212, 0.6);
-    --bubble-fill: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), rgba(45, 212, 191, 0.2));
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 12px 28px -8px rgba(0, 0, 0, 0.6);
-  }
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 /* ==========================================================================
@@ -704,4 +689,14 @@ main.App {
   width: min(100%, 460px);
   padding: var(--space-6);
   box-shadow: var(--shadow-md);
+}
+
+/* Theme picker (segmented toggle buttons) */
+.segmented {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.segmented button {
+  flex: 1;
 }

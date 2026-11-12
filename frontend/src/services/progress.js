@@ -13,6 +13,7 @@ const LEGACY_CIGARETTES_KEY = "cigarettesPerDay";
 const DEFAULT_SETTINGS = {
   quitDate: "2026-08-23T08:00",
   cigarettesPerDay: 15,
+  theme: "system", // "system" | "light" | "dark"
 };
 
 function readJSON(key, fallback) {
@@ -50,6 +51,7 @@ export function getSettings() {
   const legacyCigarettes = localStorage.getItem(LEGACY_CIGARETTES_KEY);
 
   return {
+    ...DEFAULT_SETTINGS,
     quitDate: legacyQuitDate ?? DEFAULT_SETTINGS.quitDate,
     cigarettesPerDay:
       legacyCigarettes !== null

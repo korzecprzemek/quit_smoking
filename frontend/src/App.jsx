@@ -22,6 +22,7 @@ import {
   toDayString,
 } from "./services/progress";
 import { countResistedThisWeek } from "./services/cravings";
+import { applyTheme } from "./services/theme";
 import {
   DAILY_GOAL,
   getStreak,
@@ -47,6 +48,10 @@ function App() {
   const [games, setGames] = useState(getCompletedGames);
   const [cravings, setCravings] = useState(getCravings);
   const [settings, setSettings] = useState(getSettings);
+  useEffect(() => {
+    applyTheme(settings.theme);
+  }, [settings.theme]);
+
   const quitDateInput = settings.quitDate;
   const cigarettesPerDay = settings.cigarettesPerDay;
   const quitDate = new Date(quitDateInput);
