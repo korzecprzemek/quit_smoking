@@ -5,6 +5,7 @@
 // rename an existing id without migrating old data.
 
 import BreathingGame from "../components/BreathingGame";
+import BubbleGame from "../components/BubbleGame";
 
 export const GAMES = [
   {
@@ -12,6 +13,12 @@ export const GAMES = [
     title: "Breathing",
     description: "Slow, paced breaths to calm a craving.",
     component: BreathingGame,
+  },
+  {
+    id: "bubbles",
+    title: "Bubble pop",
+    description: "Pop bubbles as they float up.",
+    component: BubbleGame,
   },
 ];
 

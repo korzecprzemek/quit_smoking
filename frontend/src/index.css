@@ -298,3 +298,34 @@ section p {
   font-weight: 400;
   opacity: 0.9;
 }
+
+/* Bubble game */
+.bubble-field {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.bubble {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(125, 211, 252, 0.35));
+  animation-name: bubble-rise;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.bubble:hover {
+  transform: none;
+}
+
+@keyframes bubble-rise {
+  to {
+    transform: translateY(calc(-1 * var(--rise)));
+  }
+}
