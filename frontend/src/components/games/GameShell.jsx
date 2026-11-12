@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { CircleCheck } from "lucide-react";
 
-export const GAME_DURATION_SECONDS = 60;
+export const GAME_DURATION_SECONDS = 5;
 
-// Shared frame for every game: title, countdown, back button, completion.
+// Shared frame for every game: title, countdown, completion, navigation.
 // A game only renders its own content as `children`.
+//
+// Playing for the full duration counts the game (onComplete fires once, at
+// the end of the countdown). The game is NOT replaced when that happens: you
+// can keep playing, and a "back" button appears beside the card.
 function GameShell({
   title,
   durationSeconds = GAME_DURATION_SECONDS,
@@ -33,6 +37,7 @@ function GameShell({
       setSecondsLeft(left);
 
       if (left === 0) {
+        // Stopping the interval here is what guarantees onComplete runs once.
         clearInterval(timerId);
         setFinished(true);
         onCompleteRef.current?.();
@@ -43,35 +48,44 @@ function GameShell({
   }, [durationSeconds]);
 
   return (
-    <section className="card game-shell">
-      <header className="game-shell-header">
-        <h2>{title}</h2>
-        <span className="game-shell-timer">
-          {finished ? "Done" : `${secondsLeft}s`}
-        </span>
-      </header>
+    <div className="game-shell-layout">
+      <section className="card game-shell">
+        <header className="game-shell-header">
+          <h2>{title}</h2>
+          <span className="game-shell-timer">
+            {finished ? "Counted" : `${secondsLeft}s`}
+          </span>
+        </header>
 
-      <div className="game-shell-progress" aria-hidden="true">
-        <div style={{ width: `${(secondsLeft / durationSeconds) * 100}%` }} />
-      </div>
+        <div className="game-shell-progress" aria-hidden="true">
+          <div
+            style={{
+              width: finished ? "100%" : `${(secondsLeft / durationSeconds) * 100}%`,
+            }}
+          />
+        </div>
 
-      {finished ? (
-        <div className="game-shell-done" role="status">
-          <CircleCheck size={48} aria-hidden="true" />
-          <p>Well done. That one counts toward today.</p>
+        {/* The game keeps running after the minute is up. */}
+        {children}
+
+        {/* Before the minute: leaving doesn't count. Afterwards the side panel takes over. */}
+        {!finished && (
+          <button type="button" className="btn-secondary" onClick={onBack}>
+            Quit early
+          </button>
+        )}
+      </section>
+
+      {finished && (
+        <div className="card game-shell-side" role="status">
+          <CircleCheck size={32} aria-hidden="true" />
+          <p>Counted toward today. Keep going if it helps.</p>
           <button type="button" onClick={onBack}>
             {doneLabel}
           </button>
         </div>
-      ) : (
-        <>
-          {children}
-          <button type="button" className="btn-secondary" onClick={onBack}>
-            Quit early
-          </button>
-        </>
       )}
-    </section>
+    </div>
   );
 }
 

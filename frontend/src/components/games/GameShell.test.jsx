@@ -47,10 +47,33 @@ describe("GameShell", () => {
 
     act(() => vi.advanceTimersByTime(2000));
     expect(onComplete).toHaveBeenCalledTimes(1);
-    expect(screen.getByText(/well done/i)).toBeTruthy();
+    expect(screen.getByText(/counted toward today/i)).toBeTruthy();
   });
 
-  it("does not complete when the player quits early", () => {
+  it("keeps the game on screen after the minute is up", () => {
+    renderShell();
+    act(() => vi.advanceTimersByTime(6000));
+    expect(screen.getByText("game content")).toBeTruthy();
+  });
+
+  it("keeps counting only once however long you keep playing", () => {
+    const { onComplete } = renderShell();
+    act(() => vi.advanceTimersByTime(60_000));
+    expect(onComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it("offers the back button beside the game only after the minute", () => {
+    const { onBack } = renderShell({ doneLabel: "Continue" });
+    expect(screen.queryByRole("button", { name: "Continue" })).toBeNull();
+
+    act(() => vi.advanceTimersByTime(6000));
+    // "Quit early" is replaced by the side button once the game counted.
+    expect(screen.queryByRole("button", { name: /quit early/i })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    expect(onBack).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not count the game when the player quits early", () => {
     const { onComplete, onBack, unmount } = renderShell();
 
     fireEvent.click(screen.getByRole("button", { name: /quit early/i }));
@@ -59,11 +82,5 @@ describe("GameShell", () => {
     unmount(); // what navigating away does
     act(() => vi.advanceTimersByTime(10_000));
     expect(onComplete).not.toHaveBeenCalled();
-  });
-
-  it("uses a custom label on the final button", () => {
-    renderShell({ doneLabel: "Continue" });
-    act(() => vi.advanceTimersByTime(6000));
-    expect(screen.getByRole("button", { name: "Continue" })).toBeTruthy();
   });
 });
