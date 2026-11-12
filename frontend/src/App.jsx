@@ -6,6 +6,7 @@ import StatCard from "./components/StatCard";
 import LoginView from "./components/LoginView";
 import GameMenu from "./components/GameMenu";
 import GameShell from "./components/GameShell";
+import SettingsView from "./components/SettingsView";
 import ProgressCard from "./components/ProgressCard";
 import { getGame } from "./games/registry";
 import {
@@ -28,6 +29,7 @@ function App() {
   const [now, setNow] = useState(() => new Date());
   const [loggedIn, setLoggedIn] = useState(false);
   const [activeGameId, setActiveGameId] = useState(null); // null = dashboard
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -63,12 +65,8 @@ function App() {
     setCravings((current) => current + 1);
   }
 
-  function handleQuitDateChange(event) {
-    setSettings(saveSettings({ quitDate: event.target.value }));
-  }
-
-  function handleCigarettesPerDayChange(event) {
-    setSettings(saveSettings({ cigarettesPerDay: Number(event.target.value) }));
+  function handleSettingsChange(changes) {
+    setSettings(saveSettings(changes));
   }
 
   if(!loggedIn){
@@ -90,60 +88,64 @@ function App() {
     );
   }
 
+  if (showSettings) {
+    return (
+      <SettingsView
+        settings={settings}
+        onChange={handleSettingsChange}
+        onBack={() => setShowSettings(false)}
+      />
+    );
+  }
+
   return (
     <main className="App">
-      <section className="dashboard">
-        <h1>Puffless</h1>
-        <p className="subtitle">One day at a time.</p>
+      <div className="dashboard">
+        <header className="dashboard-header">
+          <div>
+            <h1>Puffless</h1>
+            <p className="subtitle">One day at a time.</p>
+          </div>
+          <button
+            type="button"
+            className="icon-button"
+            aria-label="Settings"
+            onClick={() => setShowSettings(true)}
+          >
+            ⚙︎
+          </button>
+        </header>
 
-        <label htmlFor="quit-date">When did you quit?</label>
+        <div className="dashboard-grid">
+          <div className="pane pane-left">
+            <ProgressCard
+              todayCount={todayCount}
+              dailyGoal={DAILY_GOAL}
+              streak={streak}
+              isSuccess={isDaySuccess(todayCount)}
+            />
+            <CravingTracker count={cravings} onLogCraving={handleCraving} />
+          </div>
 
-        <input
-          id="quit-date"
-          type="datetime-local"
-          value={quitDateInput}
-          onChange={handleQuitDateChange}
-        />
+          <div className="pane pane-main">
+            <SmokeFreeClock quitDate={quitDateInput} now={now} />
+            <div className="stats">
+              <StatCard
+                label="Money saved"
+                value={`€${moneySaved.toFixed(2)}`}
+              />
+              <StatCard
+                label="Cigarettes avoided"
+                value={String(cigarettesAvoided)}
+              />
+            </div>
+          </div>
 
-        <label htmlFor="cigarettes-per-day">
-          Cigarettes smoked per day
-        </label>
-
-        <input
-          id="cigarettes-per-day"
-          type="number"
-          min="0"
-          value={cigarettesPerDay}
-          onChange={handleCigarettesPerDayChange}
-        />
-
-        <SmokeFreeClock quitDate={quitDateInput} now={now} />
-
-        <ProgressCard
-          todayCount={todayCount}
-          dailyGoal={DAILY_GOAL}
-          streak={streak}
-          isSuccess={isDaySuccess(todayCount)}
-        />
-
-        <div className="stats">
-          <StatCard
-            label="Money saved"
-            value={`€${moneySaved.toFixed(2)}`}
-          />
-
-          <StatCard
-            label="Cigarettes avoided"
-            value={String(cigarettesAvoided)}
-          />
+          <div className="pane pane-games">
+            <GameMenu onSelect={setActiveGameId} />
+          </div>
         </div>
-
-        <CravingTracker
-          count={cravings}
-          onLogCraving={handleCraving}
-        />
-        <GameMenu onSelect={setActiveGameId} />
-      </section>
+      </div>
     </main>
   );
 }

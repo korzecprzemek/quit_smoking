@@ -54,8 +54,8 @@ main.App {
   padding: 2rem 1rem;
 }
 
-.dashboard {
-  width: min(100%, 420px);
+.dashboard,
+.settings-card {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -64,6 +64,14 @@ main.App {
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard {
+  width: min(100%, 1100px);
+}
+
+.settings-card {
+  width: min(100%, 420px);
 }
 
 h1 {
@@ -327,5 +335,62 @@ section p {
 @keyframes bubble-rise {
   to {
     transform: translateY(calc(-1 * var(--rise)));
+  }
+}
+
+/* Dashboard layout: header on top, then three columns (progress | stats | games) */
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dashboard-header h1 {
+  padding: 0;
+}
+
+.icon-button {
+  width: auto;
+  margin: 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--input-border);
+  background: transparent;
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Spacing now comes from the pane's gap, not per-card margins. */
+.pane .hero-card,
+.pane .stat-card {
+  margin-top: 0;
+}
+
+.pane button {
+  margin-top: 0;
+}
+
+/* Narrow screens: one column, main stats first. */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pane-main {
+    order: -1;
   }
 }
