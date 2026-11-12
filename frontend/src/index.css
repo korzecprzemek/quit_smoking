@@ -584,6 +584,38 @@ main.App {
   }
 }
 
+/* Memory */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+/* Closed: tinted tile. Open: white face with the accent-coloured symbol. */
+.memory-card,
+.memory-card:hover {
+  aspect-ratio: 1;
+  min-height: 0;
+  padding: 0;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 2px solid transparent;
+}
+
+.memory-card:hover {
+  border-color: var(--accent);
+}
+
+.memory-card.is-open,
+.memory-card.is-open:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.memory-card:disabled {
+  cursor: default;
+}
+
 /* ==========================================================================
    Settings and onboarding
    ========================================================================== */

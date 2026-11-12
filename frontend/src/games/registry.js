@@ -4,9 +4,10 @@
 // `id` is also what gets stored in the completed-games history, so don't
 // rename an existing id without migrating old data.
 
-import { Sparkles, Wind } from "lucide-react";
+import { Brain, Sparkles, Wind } from "lucide-react";
 import BreathingGame from "../components/BreathingGame";
 import BubbleGame from "../components/BubbleGame";
+import MemoryGame from "../components/MemoryGame";
 
 export const GAMES = [
   {
@@ -22,6 +23,13 @@ export const GAMES = [
     description: "Pop bubbles as they float up.",
     icon: Sparkles,
     component: BubbleGame,
+  },
+  {
+    id: "memory",
+    title: "Memory match",
+    description: "Find the matching pairs.",
+    icon: Brain,
+    component: MemoryGame,
   },
 ];
 
