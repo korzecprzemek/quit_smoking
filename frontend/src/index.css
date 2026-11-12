@@ -2,8 +2,24 @@
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #f3f4f6;
+  color: var(--text);
   background: #d7e0f6;
+
+  /* Colour tokens: change the look here, not in individual rules. */
+  --text: #14213d;            /* body text on the light panels */
+  --text-muted: #3b4d73;
+  --accent-text: #1e40af;     /* subtitle and other blue accents */
+  --panel: rgba(181, 194, 224, 0.8);
+  --card-bg: #1b2a4e;         /* dark cards: clock, stats, progress */
+  --card-text: #f8fafc;
+  --card-muted: #cbd5e1;
+  --game-bg: rgba(52, 80, 143, 0.95);  /* game card, light text on it */
+  --game-text: #f8fafc;
+  --button-from: #15803d;     /* dark enough for white button text */
+  --button-to: #166534;
+  --input-bg: #ffffff;
+  --input-text: #14213d;
+  --input-border: #7f93bd;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -43,7 +59,7 @@ main.App {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background: rgba(181, 194, 224, 0.8);
+  background: var(--panel);
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 20px;
   padding: 2rem;
@@ -59,27 +75,28 @@ h1 {
 
 .subtitle {
   margin: -0.25rem 0 0;
-  color: #94a3b8;
+  color: var(--accent-text);
 }
 
 label {
   margin-top: 0.5rem;
-  color: #cbd5e1;
+  color: var(--text);
   font-size: 0.95rem;
 }
 
 input {
   width: 100%;
-  border: 1px solid rgba(148, 163, 184, 0.35);
+  border: 1px solid var(--input-border);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.7);
-  color: #f8fafc;
+  background: var(--input-bg);
+  color: var(--input-text);
   padding: 0.8rem 0.9rem;
 }
 
 .hero-card,
 .stat-card {
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--card-bg);
+  color: var(--card-text);
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 16px;
   padding: 1rem 1.1rem;
@@ -94,13 +111,13 @@ input {
 
 .hero-card span,
 .stat-card span {
-  color: #cbd5e1;
+  color: var(--card-muted);
   font-size: 0.9rem;
 }
 
 .hero-card strong {
   font-size: clamp(1.5rem, 4vw, 2.2rem);
-  color: #f8fafc;
+  color: var(--card-text);
 }
 
 .timer {
@@ -124,13 +141,13 @@ input {
 
 .stat-card strong {
   font-size: 1.4rem;
-  color: #f8fafc;
+  color: var(--card-text);
 }
 
 button {
   width: 100%;
   border-radius: 12px;
-  background: linear-gradient(135deg, #a5d4b6 0%, #16a34a 100%);
+  background: linear-gradient(135deg, var(--button-from) 0%, var(--button-to) 100%);
   color: white;
   font-weight: 700;
   cursor: pointer;
@@ -156,7 +173,6 @@ section {
 
 section p {
   margin: 0;
-  color: #e2e8f0;
 }
 
 .login-page {
@@ -200,14 +216,14 @@ section p {
 .breathing-bar {
     width:100%;
     height:24px;
-    background: #415a81;
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .breathing-bar-fill {
     height: 100%;
-    background: #22c55e;
+    background: #4ade80;
     transition: width 0.1s linear;
 }
 
@@ -222,7 +238,7 @@ section p {
 }
 
 .breathing-controls label {
-    color: black;
+    color: var(--game-text);
 }
 
 .game-shell {
@@ -230,7 +246,8 @@ section p {
   align-items: center;
   width: min(100%, 420px);
   padding: 2rem;
-  background: rgba(62, 87, 147, 0.8);
+  background: var(--game-bg);
+  color: var(--game-text);
   border-radius: 20px;
 }
 
