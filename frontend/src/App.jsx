@@ -6,7 +6,20 @@ import StatCard from "./components/StatCard";
 import LoginView from "./components/LoginView";
 import BreathingGame from "./components/BreathingGame";
 import GameShell from "./components/GameShell";
-import { completeGame, getSettings, saveSettings } from "./services/progress";
+import ProgressCard from "./components/ProgressCard";
+import {
+  completeGame,
+  getCompletedGames,
+  getSettings,
+  saveSettings,
+  toDayString,
+} from "./services/progress";
+import {
+  DAILY_GOAL,
+  getStreak,
+  getTodayCount,
+  isDaySuccess,
+} from "./services/streak";
 import './App.css';
 
 function App() {
@@ -23,6 +36,7 @@ function App() {
     return () => clearInterval(timerId);
   }, []);
 
+  const [games, setGames] = useState(getCompletedGames);
   const [settings, setSettings] = useState(getSettings);
   const quitDateInput = settings.quitDate;
   const cigarettesPerDay = settings.cigarettesPerDay;
@@ -37,6 +51,12 @@ function App() {
   const daysSmokeFree = smokeFreeSeconds / (24 * 60 * 60);
   const cigarettesAvoided = Math.floor(daysSmokeFree * cigarettesPerDay);
   const moneySaved = (cigarettesAvoided / cigarettesPerPack) * packPrice;
+
+  // Derived on every render from `games`: no separate state to keep in sync.
+  // Using `now` (ticks every second) means the day rolls over by itself.
+  const today = toDayString(now);
+  const todayCount = getTodayCount(games, today);
+  const streak = getStreak(games, today);
 
   function handleCraving() {
     setCravings((current) => current + 1);
@@ -58,7 +78,7 @@ function App() {
     <main className="breathing-screen">
       <GameShell
         title="Breathing"
-        onComplete={() => completeGame("breathing")}
+        onComplete={() => setGames(completeGame("breathing"))}
         onBack={() => setCurrentView("dashboard")}
       >
         <BreathingGame />
@@ -95,6 +115,13 @@ function App() {
         />
 
         <SmokeFreeClock quitDate={quitDateInput} now={now} />
+
+        <ProgressCard
+          todayCount={todayCount}
+          dailyGoal={DAILY_GOAL}
+          streak={streak}
+          isSuccess={isDaySuccess(todayCount)}
+        />
 
         <div className="stats">
           <StatCard

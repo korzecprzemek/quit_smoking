@@ -70,9 +70,11 @@ export function getCompletedGames() {
   return readJSON(GAMES_KEY, []);
 }
 
+// Saves the new entry and returns the full updated list (same pattern as
+// saveSettings), so the caller can put it straight into React state.
 export function completeGame(type) {
-  const games = getCompletedGames();
   const entry = { type, date: toDayString() };
-  writeJSON(GAMES_KEY, [...games, entry]);
-  return entry;
+  const updated = [...getCompletedGames(), entry];
+  writeJSON(GAMES_KEY, updated);
+  return updated;
 }

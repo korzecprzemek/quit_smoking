@@ -256,3 +256,11 @@ section p {
   align-items: center;
   gap: 0.75rem;
 }
+
+.progress-card p {
+  margin: 0;
+}
+
+.progress-success {
+  font-weight: 600;
+}
