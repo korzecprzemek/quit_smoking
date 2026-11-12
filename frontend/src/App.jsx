@@ -5,7 +5,8 @@ import SmokeFreeClock from "./components/SmokeFreeClock";
 import StatCard from "./components/StatCard";
 import LoginView from "./components/LoginView";
 import BreathingGame from "./components/BreathingGame";
-import { getSettings, saveSettings } from "./services/progress";
+import GameShell from "./components/GameShell";
+import { completeGame, getSettings, saveSettings } from "./services/progress";
 import './App.css';
 
 function App() {
@@ -55,7 +56,13 @@ function App() {
   if(currentView === "breathing") {
     return (
     <main className="breathing-screen">
-      <BreathingGame onBack={ () => setCurrentView("dashboard")}/>
+      <GameShell
+        title="Breathing"
+        onComplete={() => completeGame("breathing")}
+        onBack={() => setCurrentView("dashboard")}
+      >
+        <BreathingGame />
+      </GameShell>
     </main>
     )
   }

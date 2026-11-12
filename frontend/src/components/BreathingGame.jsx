@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const DEFAULT_INHALE_SECONDS = 4;
 const DEFAULT_EXHALE_SECONDS = 6;
 
-function BreathingGame({ onBack }) {
+function BreathingGame() {
     const [elapsed, setElapsed] = useState(0);
     const [inhaleSeconds, setInhaleSeconds] = useState(DEFAULT_INHALE_SECONDS);
     const [exhaleSeconds, setExhaleSeconds] = useState(DEFAULT_EXHALE_SECONDS);
@@ -34,17 +34,13 @@ function BreathingGame({ onBack }) {
 
     return (
     <>
-        <section className="breathing-page">
-            <p>{phase === "inhale" ? "Breathe in" : "Slowly breathe out"}</p>
-            <div className="breathing-bar">
-                <div
-                    className="breathing-bar-fill"
-                    style={{width: `${fillPercentage}%`}}
-                ></div>
-            </div>
-            <button type ="button"
-            onClick={onBack}>Return to Dashboard</button>
-        </section>
+        <p>{phase === "inhale" ? "Breathe in" : "Slowly breathe out"}</p>
+        <div className="breathing-bar">
+            <div
+                className="breathing-bar-fill"
+                style={{width: `${fillPercentage}%`}}
+            ></div>
+        </div>
         <section className="breathing-controls">
             <label htmlFor="inhale-tempo">
                 Breathe in: {inhaleSeconds} seconds
