@@ -4,6 +4,7 @@
 
 const SETTINGS_KEY = "puffless.settings";
 const GAMES_KEY = "puffless.completedGames";
+const CRAVINGS_KEY = "puffless.cravings";
 
 // Old keys from before this service existed, so existing data isn't lost.
 const LEGACY_QUIT_DATE_KEY = "quitDate";
@@ -76,5 +77,20 @@ export function completeGame(type) {
   const entry = { type, date: toDayString() };
   const updated = [...getCompletedGames(), entry];
   writeJSON(GAMES_KEY, updated);
+  return updated;
+}
+
+// Each entry: { date: "2026-11-12", at: "<ISO timestamp>", resisted: true }
+// `at` keeps the exact time, so later we can see which hours are hardest.
+export function getCravings() {
+  return readJSON(CRAVINGS_KEY, []);
+}
+
+// Saves a craving outcome and returns the full updated list.
+export function logCraving(resisted) {
+  const now = new Date();
+  const entry = { date: toDayString(now), at: now.toISOString(), resisted };
+  const updated = [...getCravings(), entry];
+  writeJSON(CRAVINGS_KEY, updated);
   return updated;
 }

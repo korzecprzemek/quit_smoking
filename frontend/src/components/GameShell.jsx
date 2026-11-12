@@ -10,6 +10,7 @@ function GameShell({
   durationSeconds = GAME_DURATION_SECONDS,
   onComplete,
   onBack,
+  doneLabel = "Back to dashboard",
   children,
 }) {
   const [secondsLeft, setSecondsLeft] = useState(durationSeconds);
@@ -59,7 +60,7 @@ function GameShell({
           <CircleCheck size={48} aria-hidden="true" />
           <p>Well done. That one counts toward today.</p>
           <button type="button" onClick={onBack}>
-            Back to dashboard
+            {doneLabel}
           </button>
         </div>
       ) : (

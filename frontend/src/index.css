@@ -642,3 +642,66 @@ main.App {
     transform: none;
   }
 }
+
+/* ==========================================================================
+   Badges
+   ========================================================================== */
+.badge-current {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.badge-current strong {
+  font-size: 1.125rem;
+}
+
+.badge-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.badge-icon.is-earned {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  opacity: 1;
+}
+
+.badge-icon-lg {
+  width: 64px;
+  height: 64px;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ==========================================================================
+   Craving flow
+   ========================================================================== */
+.craving-flow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 460px);
+}
+
+.craving-outcome {
+  width: min(100%, 460px);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+}

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import CravingTracker from "./components/CravingTracker";
+import BadgeCard from "./components/BadgeCard";
+import CravingCard from "./components/CravingCard";
+import CravingScreen from "./components/CravingScreen";
 import SmokeFreeClock from "./components/SmokeFreeClock";
 import StatCard from "./components/StatCard";
 import LoginView from "./components/LoginView";
 import GameMenu from "./components/GameMenu";
-import GameShell from "./components/GameShell";
+import GameRunner from "./components/GameRunner";
 import SettingsView from "./components/SettingsView";
 import ProgressCard from "./components/ProgressCard";
 import { Settings } from "lucide-react";
@@ -13,10 +15,13 @@ import { getGame } from "./games/registry";
 import {
   completeGame,
   getCompletedGames,
+  getCravings,
   getSettings,
+  logCraving,
   saveSettings,
   toDayString,
 } from "./services/progress";
+import { countResistedThisWeek } from "./services/cravings";
 import {
   DAILY_GOAL,
   getStreak,
@@ -25,11 +30,11 @@ import {
 } from "./services/streak";
 
 function App() {
-  const [cravings, setCravings] = useState(0);
   const [now, setNow] = useState(() => new Date());
   const [loggedIn, setLoggedIn] = useState(false);
   const [activeGameId, setActiveGameId] = useState(null); // null = dashboard
   const [showSettings, setShowSettings] = useState(false);
+  const [showCraving, setShowCraving] = useState(false);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -40,6 +45,7 @@ function App() {
   }, []);
 
   const [games, setGames] = useState(getCompletedGames);
+  const [cravings, setCravings] = useState(getCravings);
   const [settings, setSettings] = useState(getSettings);
   const quitDateInput = settings.quitDate;
   const cigarettesPerDay = settings.cigarettesPerDay;
@@ -60,9 +66,15 @@ function App() {
   const today = toDayString(now);
   const todayCount = getTodayCount(games, today);
   const streak = getStreak(games, today);
+  const resistedThisWeek = countResistedThisWeek(cravings, today);
 
-  function handleCraving() {
-    setCravings((current) => current + 1);
+  function handleGameComplete(gameId) {
+    setGames(completeGame(gameId));
+  }
+
+  function handleCravingLogged(resisted) {
+    setCravings(logCraving(resisted));
+    setShowCraving(false);
   }
 
   function handleSettingsChange(changes) {
@@ -74,17 +86,22 @@ function App() {
   }
   const activeGame = getGame(activeGameId);
   if (activeGame) {
-    const Game = activeGame.component;
     return (
-      <main className="game-screen">
-        <GameShell
-          title={activeGame.title}
-          onComplete={() => setGames(completeGame(activeGame.id))}
-          onBack={() => setActiveGameId(null)}
-        >
-          <Game />
-        </GameShell>
-      </main>
+      <GameRunner
+        game={activeGame}
+        onComplete={handleGameComplete}
+        onBack={() => setActiveGameId(null)}
+      />
+    );
+  }
+
+  if (showCraving) {
+    return (
+      <CravingScreen
+        onGameComplete={handleGameComplete}
+        onLog={handleCravingLogged}
+        onCancel={() => setShowCraving(false)}
+      />
     );
   }
 
@@ -118,13 +135,17 @@ function App() {
 
         <div className="dashboard-grid">
           <div className="pane pane-left">
-            <CravingTracker count={cravings} onLogCraving={handleCraving} />
+            <CravingCard
+              resistedThisWeek={resistedThisWeek}
+              onStart={() => setShowCraving(true)}
+            />
             <ProgressCard
               todayCount={todayCount}
               dailyGoal={DAILY_GOAL}
               streak={streak}
               isSuccess={isDaySuccess(todayCount)}
             />
+            <BadgeCard streak={streak} />
           </div>
 
           <div className="pane pane-main">
