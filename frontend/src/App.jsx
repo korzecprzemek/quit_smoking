@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router";
-import CravingScreen from "./components/CravingScreen";
-import Dashboard from "./components/Dashboard";
-import GamePage from "./components/GamePage";
-import OnboardingView from "./components/OnboardingView";
-import SettingsView from "./components/SettingsView";
+import CravingScreen from "./components/screens/CravingScreen";
+import Dashboard from "./components/screens/Dashboard";
+import GamePage from "./components/screens/GamePage";
+import OnboardingView from "./components/screens/OnboardingView";
+import SettingsView from "./components/screens/SettingsView";
 import {
   completeGame,
   getCompletedGames,

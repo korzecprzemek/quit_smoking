@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toInputDateTime } from "../services/progress";
+import { toInputDateTime } from "../../services/progress";
 
 // First-run setup. Numbers are kept as strings while typing so a field can be
 // cleared and retyped; they're converted once, on submit. The browser's own

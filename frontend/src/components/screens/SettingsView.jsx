@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { THEMES } from "../services/theme";
-import { toInputDateTime } from "../services/progress";
+import { THEMES } from "../../services/theme";
+import { toInputDateTime } from "../../services/progress";
 
 // Controlled inputs: values come from props, edits go up through onChange.
 // This component doesn't know about storage, App decides what to do with them.

@@ -5,9 +5,9 @@
 // rename an existing id without migrating old data.
 
 import { Brain, Sparkles, Wind } from "lucide-react";
-import BreathingGame from "../components/BreathingGame";
-import BubbleGame from "../components/BubbleGame";
-import MemoryGame from "../components/MemoryGame";
+import BreathingGame from "../components/games/BreathingGame";
+import BubbleGame from "../components/games/BubbleGame";
+import MemoryGame from "../components/games/MemoryGame";
 
 export const GAMES = [
   {

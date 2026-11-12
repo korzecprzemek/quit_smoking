@@ -1,6 +1,6 @@
 import { Navigate, useNavigate, useParams } from "react-router";
-import GameRunner from "./GameRunner";
-import { getGame } from "../games/registry";
+import GameRunner from "../games/GameRunner";
+import { getGame } from "../../game-logic/registry";
 
 // Route element for /games/:gameId. An unknown id goes home instead of
 // rendering a blank screen.

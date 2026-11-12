@@ -1,24 +1,24 @@
 import { Settings } from "lucide-react";
 import { useNavigate } from "react-router";
-import BadgeCard from "./BadgeCard";
-import CravingCard from "./CravingCard";
-import GameMenu from "./GameMenu";
-import ProgressCard from "./ProgressCard";
-import SmokeFreeClock from "./SmokeFreeClock";
-import StatCard from "./StatCard";
-import { countResistedThisWeek } from "../services/cravings";
-import { toDayString } from "../services/progress";
+import BadgeCard from "../cards/BadgeCard";
+import CravingCard from "../cards/CravingCard";
+import GameMenu from "../games/GameMenu";
+import ProgressCard from "../cards/ProgressCard";
+import SmokeFreeClock from "../cards/SmokeFreeClock";
+import StatCard from "../cards/StatCard";
+import { countResistedThisWeek } from "../../services/cravings";
+import { toDayString } from "../../services/progress";
 import {
   getCigarettesAvoided,
   getMoneySaved,
   getSmokeFreeSeconds,
-} from "../services/stats";
+} from "../../services/stats";
 import {
   DAILY_GOAL,
   getStreak,
   getTodayCount,
   isDaySuccess,
-} from "../services/streak";
+} from "../../services/streak";
 
 // The home screen. It receives the raw data (settings, games, cravings, now)
 // and derives every number from it during render, so nothing can go stale.

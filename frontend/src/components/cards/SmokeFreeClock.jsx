@@ -1,4 +1,4 @@
-import { getSmokeFreeSeconds } from "../services/stats";
+import { getSmokeFreeSeconds } from "../../services/stats";
 
 function SmokeFreeClock({ quitDate, now }) {
   const smokeFreeSeconds = getSmokeFreeSeconds(quitDate, now);

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import GameMenu from "./GameMenu";
-import GameRunner from "./GameRunner";
-import { getGame } from "../games/registry";
+import GameMenu from "../games/GameMenu";
+import GameRunner from "../games/GameRunner";
+import { getGame } from "../../game-logic/registry";
 
 // The craving flow, as three steps:
 //   choose  -> pick something to focus on

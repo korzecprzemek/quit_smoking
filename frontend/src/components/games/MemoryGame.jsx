@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Anchor, Cloud, Heart, Moon, Star, Sun } from "lucide-react";
-import { createDeck } from "../games/memoryDeck";
+import { createDeck } from "../../game-logic/memoryDeck";
 
 const ICONS = { sun: Sun, moon: Moon, star: Star, heart: Heart, cloud: Cloud, anchor: Anchor };
 const MISMATCH_DELAY_MS = 800;

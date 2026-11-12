@@ -3,7 +3,7 @@ import {
   BADGES,
   getCurrentBadge,
   getNextBadge,
-} from "../services/badges";
+} from "../../services/badges";
 
 // Presentational: takes the streak, shows the earned badge, the next
 // target, and the whole collection. The list itself is data (services/badges).

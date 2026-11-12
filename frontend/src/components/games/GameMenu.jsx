@@ -1,4 +1,4 @@
-import { GAMES } from "../games/registry";
+import { GAMES } from "../../game-logic/registry";
 
 // One tile per registered game. Knows nothing about specific games.
 function GameMenu({ onSelect }) {
