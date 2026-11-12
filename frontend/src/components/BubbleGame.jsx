@@ -43,7 +43,7 @@ function BubbleGame() {
 
   return (
     <>
-      <p>Pop the bubbles as they float up. No rush, no score to beat.</p>
+      <p className="muted">Pop the bubbles as they float up. No rush, no score to beat.</p>
 
       <div className="bubble-field" style={{ height: FIELD_HEIGHT }}>
         {bubbles.map((bubble) => (
@@ -67,7 +67,7 @@ function BubbleGame() {
         ))}
       </div>
 
-      <p>Popped: {popped}</p>
+      <p className="muted">Popped: {popped}</p>
     </>
   );
 }

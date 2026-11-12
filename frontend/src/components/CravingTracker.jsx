@@ -12,14 +12,16 @@ function getCravingReward(count) {
 
 function CravingTracker({ count, onLogCraving }) {
     const reward = getCravingReward(count);
-    
+
     return (
-        <section>
-            <button onClick={onLogCraving}>
+        <section className="card craving-card">
+            <h2>Cravings</h2>
+
+            <button type="button" className="btn-lg" onClick={onLogCraving}>
                 I'm having a craving
             </button>
 
-            <p>Cravings logged: {count} </p>
+            <p className="muted">Cravings logged: {count}</p>
 
             {reward && (
                 <p className="reward" role="status">

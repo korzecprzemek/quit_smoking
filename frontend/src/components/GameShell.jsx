@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { CircleCheck } from "lucide-react";
 
 export const GAME_DURATION_SECONDS = 60;
 
@@ -41,7 +42,7 @@ function GameShell({
   }, [durationSeconds]);
 
   return (
-    <section className="game-shell">
+    <section className="card game-shell">
       <header className="game-shell-header">
         <h2>{title}</h2>
         <span className="game-shell-timer">
@@ -49,8 +50,13 @@ function GameShell({
         </span>
       </header>
 
+      <div className="game-shell-progress" aria-hidden="true">
+        <div style={{ width: `${(secondsLeft / durationSeconds) * 100}%` }} />
+      </div>
+
       {finished ? (
         <div className="game-shell-done" role="status">
+          <CircleCheck size={48} aria-hidden="true" />
           <p>Well done. That one counts toward today.</p>
           <button type="button" onClick={onBack}>
             Back to dashboard
@@ -59,7 +65,7 @@ function GameShell({
       ) : (
         <>
           {children}
-          <button type="button" onClick={onBack}>
+          <button type="button" className="btn-secondary" onClick={onBack}>
             Quit early
           </button>
         </>

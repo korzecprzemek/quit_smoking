@@ -34,7 +34,7 @@ function BreathingGame() {
 
     return (
     <>
-        <p>{phase === "inhale" ? "Breathe in" : "Slowly breathe out"}</p>
+        <p className="game-prompt">{phase === "inhale" ? "Breathe in" : "Slowly breathe out"}</p>
         <div className="breathing-bar">
             <div
                 className="breathing-bar-fill"

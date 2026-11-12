@@ -1,335 +1,596 @@
+/* ==========================================================================
+   Design tokens. Change the look here, not in individual rules.
+   ========================================================================== */
 :root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color-scheme: light dark; /* native inputs, scrollbars, date picker follow the theme */
+
+  --font: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Colour: neutrals + one accent (teal) */
+  --bg: #f3f6fb;
+  --surface: #ffffff;
+  --surface-2: #f6f8fc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #556176;
+  --accent: #0f766e;
+  --accent-hover: #115e59;
+  --accent-soft: #dff3f1;
+  --on-accent: #ffffff;
+  --focus: #2563eb;
+
+  /* The big smoke-free clock card */
+  --hero-bg: linear-gradient(145deg, #0f766e 0%, #0b5c56 100%);
+  --hero-text: #ffffff;
+  --hero-muted: rgba(255, 255, 255, 0.85);
+
+  /* Game screens */
+  --game-screen-bg: linear-gradient(160deg, #dff3f0 0%, #e6edfb 100%);
+  --bubble-border: rgba(15, 118, 110, 0.55);
+  --bubble-fill: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(45, 212, 191, 0.3));
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Two radii: controls and cards */
+  --radius: 12px;
+  --radius-lg: 20px;
+
+  /* Soft, layered shadows */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 12px 28px -8px rgba(15, 23, 42, 0.18);
+
+  font-family: var(--font);
   line-height: 1.5;
   font-weight: 400;
-  color: var(--text);
-  background: #d7e0f6;
-
-  /* Colour tokens: change the look here, not in individual rules. */
-  --text: #14213d;            /* body text on the light panels */
-  --text-muted: #3b4d73;
-  --accent-text: #1e40af;     /* subtitle and other blue accents */
-  --panel: rgba(181, 194, 224, 0.8);
-  --card-bg: #1b2a4e;         /* dark cards: clock, stats, progress */
-  --card-text: #f8fafc;
-  --card-muted: #cbd5e1;
-  --game-bg: rgba(52, 80, 143, 0.95);  /* game card, light text on it */
-  --game-text: #f8fafc;
-  --button-from: #15803d;     /* dark enough for white button text */
-  --button-to: #166534;
-  --input-bg: #ffffff;
-  --input-text: #14213d;
-  --input-border: #7f93bd;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a1220;
+    --surface: #121b2d;
+    --surface-2: #17223a;
+    --border: #243049;
+    --text: #e8eef9;
+    --text-muted: #9fb0cb;
+    --accent: #2dd4bf;
+    --accent-hover: #5eead4;
+    --accent-soft: #11363a;
+    --on-accent: #042f2e;
+    --focus: #93c5fd;
+
+    --hero-bg: linear-gradient(145deg, #115e59 0%, #0f4f4b 100%);
+    --hero-text: #f0fdfa;
+    --hero-muted: rgba(240, 253, 250, 0.85);
+
+    --game-screen-bg: linear-gradient(160deg, #0a1f24 0%, #0a1220 100%);
+    --bubble-border: rgba(94, 234, 212, 0.6);
+    --bubble-fill: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), rgba(45, 212, 191, 0.2));
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 12px 28px -8px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
 * {
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
-  min-height: 100%;
   min-height: 100vh;
 }
 
 body {
-  min-height: 100vh;
-  background: linear-gradient(180deg, #b9c1d6 0%, #c3cde2 100%);
+  background: var(--bg);
+  color: var(--text);
 }
 
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+small {
+  font-size: 0.875rem;
+}
+
+.muted,
+.subtitle {
+  color: var(--text-muted);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Buttons: the default is primary. Add a modifier for other roles.
+   ========================================================================== */
 button,
 input {
   font: inherit;
 }
 
-main.App {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+button {
+  display: inline-flex;
   align-items: center;
-  padding: 2rem 1rem;
-}
-
-.dashboard,
-.settings-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background: var(--panel);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-.dashboard {
-  width: min(100%, 1100px);
-}
-
-.settings-card {
-  width: min(100%, 420px);
-}
-
-h1 {
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px; /* comfortable touch target */
   margin: 0;
-  font-size: clamp(2.25rem, 5vw, 3rem);
-  line-height: 1.1;
-  padding: 2rem;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
-.subtitle {
-  margin: -0.25rem 0 0;
-  color: var(--accent-text);
+button:hover {
+  background: var(--accent-hover);
 }
 
-label {
-  margin-top: 0.5rem;
+button:active {
+  transform: scale(0.98);
+}
+
+.btn-lg {
+  min-height: 56px;
+  font-size: 1.125rem;
+}
+
+.btn-secondary {
+  background: var(--surface);
   color: var(--text);
-  font-size: 0.95rem;
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-2);
+  border-color: var(--text-muted);
+}
+
+.icon-button {
+  width: 44px;
+  padding: 0;
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.icon-button:hover {
+  background: var(--surface-2);
+  border-color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Form controls
+   ========================================================================== */
+label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 input {
   width: 100%;
-  border: 1px solid var(--input-border);
-  border-radius: 12px;
-  background: var(--input-bg);
-  color: var(--input-text);
-  padding: 0.8rem 0.9rem;
+  min-height: 44px;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
 }
 
-.hero-card,
+input[type="range"] {
+  min-height: 0;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+.card,
 .stat-card {
-  background: var(--card-bg);
-  color: var(--card-text);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 16px;
-  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
+.stat-card {
+  gap: var(--space-1);
+}
+
+.stat-card > span,
+.card-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.stat-card strong {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The hero: biggest thing on the page */
 .hero-card {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-5);
+  background: var(--hero-bg);
+  color: var(--hero-text);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
-.hero-card span,
-.stat-card span {
-  color: var(--card-muted);
-  font-size: 0.9rem;
-}
-
-.hero-card strong {
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  color: var(--card-text);
+.hero-card > span {
+  color: var(--hero-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .timer {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
+  display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  font-size: clamp(2.25rem, 7vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.stat-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.stat-card strong {
-  font-size: 1.4rem;
-  color: var(--card-text);
-}
-
-button {
-  width: 100%;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--button-from) 0%, var(--button-to) 100%);
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  opacity: 0.98;
+  gap: var(--space-4);
 }
 
 .reward {
-  margin: 0;
   text-align: center;
-  font-size: 3.5rem;
+  font-size: 3rem;
+  line-height: 1.2;
 }
 
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-section p {
-  margin: 0;
-}
-
-.login-page {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  background: #bac5de;
+/* ==========================================================================
+   Dashboard layout (mobile first: one column, clock first)
+   ========================================================================== */
+main.App {
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-5) var(--space-4);
 }
 
-.login-form {
+.dashboard {
+  width: min(100%, 1100px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.dashboard-header {
   display: flex;
   align-items: center;
-  gap: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  padding: 5px;
-  margin: 5px;
-  border-radius: 16px;
+  justify-content: space-between;
+  gap: var(--space-4);
 }
-.game-screen {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.pane {
+  display: flex;
   flex-direction: column;
-  gap: 1rem;
-    padding: 2rem 1rem;
-}
-.breathing-page {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction:column;
-    width: min(100%,420px);
-    padding: 2rem;
-    background: rgba(62, 87, 147, 0.8);
-    border-radius: 20px;
-}
-.breathing-bar {
-    width:100%;
-    height:24px;
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 12px;
-    overflow: hidden;
+  gap: var(--space-4);
 }
 
-.breathing-bar-fill {
-    height: 100%;
-    background: #4ade80;
-    transition: width 0.1s linear;
+.pane-main {
+  order: -1;
 }
 
-.breathing-controls {
-  width: min(100%, 260px);
+@media (min-width: 900px) {
+  main.App {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .pane-main {
+    order: 0;
+  }
+}
+
+/* ==========================================================================
+   Progress card
+   ========================================================================== */
+.progress-head {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
-.breathing-controls input[type="range"] {
-  width: 180px;
-  padding: 0;
+.streak-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
-.breathing-controls label {
-    color: var(--game-text);
+.streak-pill.is-empty {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+.goal-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.goal-row strong {
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.goal-dots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.goal-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface-2);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.goal-dot.is-filled {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.progress-card.is-success {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.progress-success {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress-success {
+    animation: pop 0.5s ease-out;
+  }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   Game menu
+   ========================================================================== */
+.game-tile {
+  justify-content: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border);
+  text-align: left;
+}
+
+.game-tile:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.game-tile-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.game-tile-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-tile-text small {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   Game screens
+   ========================================================================== */
+.game-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5) var(--space-4);
+  background: var(--game-screen-bg);
 }
 
 .game-shell {
-  margin: 0 auto;
-  align-items: center;
-  width: min(100%, 420px);
-  padding: 2rem;
-  background: var(--game-bg);
-  color: var(--game-text);
-  border-radius: 20px;
+  width: min(100%, 460px);
+  gap: var(--space-4);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
 }
 
 .game-shell-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  width: 100%;
-}
-
-.game-shell-header h2 {
-  margin: 0;
-  font-size: 1.25rem;
 }
 
 .game-shell-timer {
+  color: var(--text-muted);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.game-shell-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  overflow: hidden;
+}
+
+.game-shell-progress > div {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.25s linear;
 }
 
 .game-shell-done {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  text-align: center;
 }
 
-.progress-card p {
-  margin: 0;
+.game-shell-done svg {
+  color: var(--accent);
 }
 
-.progress-success {
+.game-prompt {
+  min-height: 2.25rem;
+  text-align: center;
+  font-size: 1.5rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-.game-menu h2 {
-  margin: 0.5rem 0 0;
-  font-size: 1.1rem;
+/* Breathing */
+.breathing-bar {
+  width: 100%;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  overflow: hidden;
 }
 
-.game-menu button {
+.breathing-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.1s linear;
+}
+
+.breathing-controls {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
+  gap: var(--space-2);
+  width: 100%;
 }
 
-.game-menu small {
-  font-weight: 400;
-  opacity: 0.9;
-}
-
-/* Bubble game */
+/* Bubbles */
 .bubble-field {
   position: relative;
   width: 100%;
   overflow: hidden;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  background: var(--accent-soft);
 }
 
-.bubble {
+.bubble,
+.bubble:hover {
   position: absolute;
+  min-height: 0; /* override the 44px button minimum so bubbles stay round */
   margin: 0;
   padding: 0;
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  border: 2px solid var(--bubble-border);
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(125, 211, 252, 0.35));
+  background: var(--bubble-fill);
   animation-name: bubble-rise;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-}
-
-.bubble:hover {
-  transform: none;
 }
 
 @keyframes bubble-rise {
@@ -338,59 +599,46 @@ section p {
   }
 }
 
-/* Dashboard layout: header on top, then three columns (progress | stats | games) */
-.dashboard-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
+/* ==========================================================================
+   Settings and login
+   ========================================================================== */
+.settings-card {
+  width: min(100%, 440px);
+  margin-top: var(--space-5);
+  gap: var(--space-4);
 }
 
-.dashboard-header h1 {
-  padding: 0;
-}
-
-.icon-button {
-  width: auto;
-  margin: 0;
-  padding: 0.4rem 0.7rem;
-  border: 1px solid var(--input-border);
-  background: transparent;
-  color: var(--text);
+.settings-card h1 {
   font-size: 1.5rem;
-  line-height: 1;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 1.5rem;
-  align-items: start;
-}
-
-.pane {
+.login-page {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-4);
+  text-align: center;
 }
 
-/* Spacing now comes from the pane's gap, not per-card margins. */
-.pane .hero-card,
-.pane .stat-card {
-  margin-top: 0;
+.login-form {
+  width: min(100%, 380px);
+  box-shadow: var(--shadow-md);
 }
 
-.pane button {
-  margin-top: 0;
-}
-
-/* Narrow screens: one column, main stats first. */
-@media (max-width: 900px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+/* ==========================================================================
+   Motion preferences: keep the games themselves, drop decorative transitions
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  button,
+  .goal-dot,
+  .game-shell-progress > div {
+    transition: none;
   }
 
-  .pane-main {
-    order: -1;
+  button:active {
+    transform: none;
   }
 }

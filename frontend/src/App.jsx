@@ -8,6 +8,7 @@ import GameMenu from "./components/GameMenu";
 import GameShell from "./components/GameShell";
 import SettingsView from "./components/SettingsView";
 import ProgressCard from "./components/ProgressCard";
+import { Settings } from "lucide-react";
 import { getGame } from "./games/registry";
 import {
   completeGame,
@@ -22,7 +23,6 @@ import {
   getTodayCount,
   isDaySuccess,
 } from "./services/streak";
-import './App.css';
 
 function App() {
   const [cravings, setCravings] = useState(0);
@@ -112,19 +112,19 @@ function App() {
             aria-label="Settings"
             onClick={() => setShowSettings(true)}
           >
-            ⚙︎
+            <Settings size={22} aria-hidden="true" />
           </button>
         </header>
 
         <div className="dashboard-grid">
           <div className="pane pane-left">
+            <CravingTracker count={cravings} onLogCraving={handleCraving} />
             <ProgressCard
               todayCount={todayCount}
               dailyGoal={DAILY_GOAL}
               streak={streak}
               isSuccess={isDaySuccess(todayCount)}
             />
-            <CravingTracker count={cravings} onLogCraving={handleCraving} />
           </div>
 
           <div className="pane pane-main">

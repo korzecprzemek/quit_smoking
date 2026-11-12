@@ -3,29 +3,33 @@
 function SettingsView({ settings, onChange, onBack }) {
   return (
     <main className="App">
-      <section className="settings-card">
+      <section className="card settings-card">
         <h1>Settings</h1>
 
-        <label htmlFor="quit-date">When did you quit?</label>
-        <input
-          id="quit-date"
-          type="datetime-local"
-          value={settings.quitDate}
-          onChange={(event) => onChange({ quitDate: event.target.value })}
-        />
+        <div className="field">
+          <label htmlFor="quit-date">When did you quit?</label>
+          <input
+            id="quit-date"
+            type="datetime-local"
+            value={settings.quitDate}
+            onChange={(event) => onChange({ quitDate: event.target.value })}
+          />
+        </div>
 
-        <label htmlFor="cigarettes-per-day">Cigarettes smoked per day</label>
-        <input
-          id="cigarettes-per-day"
-          type="number"
-          min="0"
-          value={settings.cigarettesPerDay}
-          onChange={(event) =>
-            onChange({ cigarettesPerDay: Number(event.target.value) })
-          }
-        />
+        <div className="field">
+          <label htmlFor="cigarettes-per-day">Cigarettes smoked per day</label>
+          <input
+            id="cigarettes-per-day"
+            type="number"
+            min="0"
+            value={settings.cigarettesPerDay}
+            onChange={(event) =>
+              onChange({ cigarettesPerDay: Number(event.target.value) })
+            }
+          />
+        </div>
 
-        <button type="button" onClick={onBack}>
+        <button type="button" className="btn-secondary" onClick={onBack}>
           Back to dashboard
         </button>
       </section>
